@@ -20,7 +20,7 @@ collect_laptop_load_task = PythonOperator(
     python_callable=collect_load,
     # Pass key word arguments. They can also be templated
     op_kwargs={
-        "dir": ("{{ var.value.base_data_path }}/{{ dag.dag_id }}/"
+        "dir": ("{{ var.value.base_data_path }}/raw/{{ dag.dag_id }}/"
                 "{{ execution_date.strftime('%Y/%m/%d/%H') }}"),
         "file_name": "load_{{ execution_date.strftime('%Y%m%d%H%M') }}.txt"
     }
