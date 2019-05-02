@@ -11,6 +11,7 @@ create_base_directory_task = BashOperator(
     # is one of them. We use an Airflow Variable to read the base data path and
     # we partition the directories by the execution hour of the operator. For
     # more info about macros you can use in templated parameters:
+    # https://airflow.apache.org/macros.html
     bash_command=(
         "mkdir -p {{ var.value.base_data_path }}/raw/{{ dag.dag_id }}/"
         "{{ execution_date.strftime('%Y/%m/%d/%H') }}"

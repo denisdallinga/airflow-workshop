@@ -10,6 +10,7 @@ def collect_load(dir, file_name):
 
     file = open(f"{dir}/{file_name}", 'w')
     file.write(str(minutely_average))
+    file.close()
 
 
 collect_laptop_load_task = PythonOperator(

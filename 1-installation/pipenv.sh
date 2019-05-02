@@ -7,7 +7,8 @@ pipenv --version
 
 # Create a new working directory
 mkdir ~/projects/airflow-demo
-# And let's set this directory as the airflow home:
+# And let's set this directory as the airflow home. If you do not set this,
+# Airflow will set up in your home directory under subdirectory airflow.
 export AIRFLOW_HOME=~/projects/airflow-demo
 
 # Install latest version of apache-airflow

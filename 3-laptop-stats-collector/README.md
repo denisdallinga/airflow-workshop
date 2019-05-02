@@ -5,4 +5,4 @@ We want to collect the following metrics:
 - How many chrome tabs are open?
 - What is the load on my laptop?
 
-For this we are going to build two DAG's. One collector DAG that will run every minute.
+For this we are going to build two DAG's. One collector DAG that will run every minute. It will collect the metrics and write them to disk. The other collector dag will aggregate the metrics, save them to disk and send a summary to slack.
