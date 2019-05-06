@@ -50,7 +50,7 @@ collect_laptop_load_task = PythonOperator(
 collect_open_chrome_tabs_command = (
     "ps -ef | grep Chrome | grep type=renderer | wc -l | sed 's/ //g' > "
     + DATA_PATH +
-    "open_chrome_tabs_{{ execution_date.strftime('%Y%m%d%H%M') }}.txt"
+    "/open_chrome_tabs_{{ execution_date.strftime('%Y%m%d%H%M') }}.txt"
 )
 
 collect_open_chrome_tabs_task = BashOperator(
