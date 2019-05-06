@@ -38,14 +38,14 @@ def aggregate_metrics(source_path, file_glob, result_path, result_file_name):
     file_paths = glob.glob(f"{source_path}/{file_glob}")
     total = 0
     for file_path in file_paths:
-        measured_value = open(file_path, 'r').read()
-        total += float(measured_value)
+        with open(file_path, 'r') as file:
+            measured_value = file.read()
+            total += float(measured_value)
 
     average_measurement = total / len(file_paths)
 
-    file = open(f"{result_path}/{result_file_name}", 'w')
-    file.write(str(average_measurement))
-    file.close()
+    with open(f"{result_path}/{result_file_name}", 'w') as file:
+        file.write(str(average_measurement))
 
     return average_measurement
 

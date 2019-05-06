@@ -8,9 +8,8 @@ def collect_load(dir, file_name):
     load_averages = os.getloadavg()
     minutely_average = load_averages[0]
 
-    file = open(f"{dir}/{file_name}", 'w')
-    file.write(str(minutely_average))
-    file.close()
+    with open(f"{dir}/{file_name}", 'w') as file:
+        file.write(str(minutely_average))
 
 
 collect_laptop_load_task = PythonOperator(

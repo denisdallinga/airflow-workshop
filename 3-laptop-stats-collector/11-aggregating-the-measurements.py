@@ -1,20 +1,29 @@
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 
+RESULT_PATH = ("{{ var.value.base_data_path }}/refined/{{ dag.dag_id }}/"
+               "{{ execution_date.strftime('%Y/%m/%d/%H') }}")
+
+create_data_directory_task = BashOperator(
+    task_id='create_data_directory',
+    dag=dag,
+    bash_command=f"mkdir -p {RESULT_PATH}"
+)
+
 def aggregate_metrics(source_path, file_glob, result_path, result_file_name):
     import glob
 
     file_paths = glob.glob(f"{source_path}/{file_glob}")
     total = 0
     for file_path in file_paths:
-        measured_value = open(file_path, 'r').read()
-        total += float(measured_value)
+        with open(file_path, 'r') as file:
+            measured_value = file.read()
+            total += float(measured_value)
 
     average_measurement = total / len(file_paths)
 
-    file = open(f"{result_path}/{result_file_name}", 'w')
-    file.write(str(average_measurement))
-    file.close()
+    with open(f"{result_path}/{result_file_name}", 'w') as file:
+        file.write(str(average_measurement))
 
     # Values that are returned by a callable of a PythonOperator are pushed to
     # an XCom. An XCom facilitates operator intercommunication. It can be used
@@ -24,14 +33,7 @@ def aggregate_metrics(source_path, file_glob, result_path, result_file_name):
     # a single operator.
     return average_measurement
 
-RESULT_PATH = ("{{ var.value.base_data_path }}/refined/{{ dag.dag_id }}/"
-               "{{ execution_date.strftime('%Y/%m/%d/%H') }}")
 
-create_data_directory_task = BashOperator(
-    task_id='create_data_directory',
-    dag=dag,
-    bash_command=f"mkdir -p {RESULT_PATH}"
-)
 
 aggregate_metrics_task = PythonOperator(
     task_id='aggregate_load_metrics',
